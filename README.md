@@ -54,7 +54,7 @@ $ FLASK_APP=hello flask run
     - `reactions:read` (get events when someone reacts)
 
 You do not need to add a 'Redirect URL'.  After desired scopes are selected, then click **Install App to Workspace**!  You will receive a `Bot User OAuth Access Token` which you should copy and store as a key/value pair in local `.env` file like this:
->`BOT_TOKEN="xoxb-421405203735-1256443538144-MqrEC6h0ZXpkUJWSwoA5JHZ1"`
+>`BOT_TOKEN=<your bot_token>`
 
 DO NOT put this token in your source code, or push it to github in any way.  That is called a `Token Leak` and you will get a warning from github.  They scan user repos for leaked tokens.
 
@@ -71,6 +71,6 @@ DO NOT put this token in your source code, or push it to github in any way.  Tha
 
 
 # References
-- https://github.com/slackapi/python-slackclient/tree/master/tutorial
-- https://github.com/slackapi/python-slack-events-api#slack-events-api-adapter-for-python
+- [Python SlackClient tutorial](https://github.com/slackapi/python-slackclient/tree/master/tutorial)
+- [Slack Events API with Python](https://github.com/slackapi/python-slack-events-api#slack-events-api-adapter-for-python)
 - [Events to choose from](https://api.slack.com/events-api#subscriptions)
