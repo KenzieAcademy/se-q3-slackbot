@@ -1,4 +1,5 @@
 # seq3-slackbot
+### _Instructor-guided activity_
 In this project we are going to explore how to use Python and Flask to integrate with the popular Slack API.  We will create a barebones starter [Slack App](https://api.slack.com/start) that uses the [Flask](https://palletsprojects.com/p/flask/) microframework.    Although the final application itself will be a simple message-echo, there is work behind the scenes to get things up and running.
 
 ## Objectives
@@ -71,6 +72,79 @@ DO NOT put this token in your source code, or push it to github in any way.  Tha
 - Run the minimal flask app in terminal 1 `python app.py` - defaults to port 3000
 - Run `ngrok` in second terminal `ngrok http 3000`.
 
+# Coding the App
+Whew!  After all this setup, it's finally time to write some code for the App!   In the app, Flask will do the heavy lifting.  There are just a few functions to write, to do the work of receiving and responding to Slack events.
+
+### Environment
+Use the `load_dotenv` function to make sure all the secrets that you stored in the `.env` file are available in Python.  When .env is correctly loaded, you should be able to do this in your code without raising a KeyError exception:
+```python
+import os
+token = os.environ['SLACK_BOT_TOKEN']
+```
+
+### Flask app, events adapter, and web client
+ - Create a global (module scope) instance of a `Flask` application and name it `app`.  
+ - Create a global instance of the `SlackEventAdapter` object which is found in the `slackeventsapi` library.  This library should already be installed into your virtual environment.  You will need to provide the **Slack Signing Secret**, a routing url for the incoming event stream, and the Flask app instance itself.  The SlackEventAdapter is used to receive the incoming event stream, and dispatch events to various handlers that you will create.
+ - Create a global instance of the `WebClient` object which is found in the `slack` library (already installed). You will need to provide the **Bot Token**.  The WebClient is used to send outgoing messages to Slack.
+
+### Root Path
+Add a Flask route to handle the root path of your webservice, otherwise known as `/`  Write a function to handle the request, and use a standard Flask decorator to assign the route `/` to this handler function.  It's good to have a root path so you know your Flask app is up and running when you visit the URL for it.
+
+### Event Handlers
+ - Create an event handler function for the `message` event.  This event will be received through the Slack Events Adapter.  Use the events adapter decorator notation to bind your handler function to the adapter's event dispatcher.  Your app will receive the "message" event when someone is talking in its app_home space. 
+ - Extract the text portion of the incoming message, as well as the user_id and channel_id.  Then send a message back to the same channel with the same text, and mention which user_id it came from e.g. `f"Received via message from {user_id}: {text}"`
+ - WATCH OUT: It's easy to get into an infinite message loop here, because every time you post a message you will get another message event and you will post another reply and get another event and so on.  To prevent this, think of a way to detect NOT RESPOND to your own reply message! You will need to experiment with this.
+ - Create another similar event handler function for the `app_mention` event.  Remember when you gave your app the `app_mentions:read` scope in Setup Part 3?  That enables this event.  This allows your app to respond to anyone who @-mentions your app by name in other channels or DMs.  Use the decorator notation again to bind this handler to the event dispatcher.  This event is a little easier, it should not require the echo suppression that the "message" event needs.
+
+## Debugging
+Remember that Flask has a built-in debugger which is served in a web page.  If your code raises an exception, you can view this by visiting the Flask root page.
+
+The Flask app comes with a logger that you can use in your code, you don't have to setup your own logger
+```python
+app.logger.debug("This is a debug message")
+app.logger.info("Here an INFO-level message")
+```
+
+To peek inside the data received from any incoming request, use this code snippet.  NOTE that you will only see this if you have the `FLASK_DEBUG` environment variable set to 1. 
+```python
+# Uncomment to log body of incoming requests when FLASK_DEBUG=1
+@app.before_request
+def log_request():
+    app.logger.debug("Request JSON:\n %s", json.dumps(request.json, indent=4))
+```
+
+Here is a VSCode debugging configuration that you can copy-paste into your `launch.json` file
+```json
+{
+    "name": "Slackbot Debug",
+    "type": "python",
+    "request": "launch",
+    "module": "flask",
+    "env": {
+        "FLASK_APP": "app.py",
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "1"
+    },
+    "args": [
+        "run",
+        "--no-debugger",
+        "--no-reload",
+        "--port", "3000"
+    ],
+    "jinja": true
+}
+
+```
+
+## Async Event Handlers
+We have implemented synchronous event handlers.  That means that when each handler's code is running, no other events will be handled.  OK for 1995-era web pages, but not anymore.  Users expect fast loading and fast responses to API queries.
+
+Research project:  How would you implement Async handlers for these events?
+
+## Conclusion
+We hope you enjoyed this brief guided activity to explore Slack Apps.  Slack has a rich ecosystem of APIs, tutorials, design elements and code libraries specifically for app developers.  The APIs are well-documented.  You may even consider developing your own Slack App and marketing it in the Slack App Directory!
+
+Here's a [case study](https://pawelurbanek.com/profitable-slack-bot-rails), in case you were wondering.
 
 # References
 - [Python SlackClient tutorial](https://github.com/slackapi/python-slackclient/tree/master/tutorial)
