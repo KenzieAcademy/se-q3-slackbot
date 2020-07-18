@@ -1,3 +1,5 @@
+<img height="120px" src="img/slack_api_200.png" />
+
 # seq3-slackbot
 ### _Instructor-guided activity_
 In this project we are going to explore how to use Python and Flask to integrate with the popular Slack API.  We will create a barebones starter [Slack App](https://api.slack.com/start) that uses the [Flask](https://palletsprojects.com/p/flask/) microframework.    Although the final application itself will be a simple message-echo, there is work behind the scenes to get things up and running.
@@ -40,13 +42,14 @@ $ FLASK_APP=hello flask run
     - [KenzieBot2](https://join.slack.com/t/kenziebot2/shared_invite/zt-6ccr4b5t-19RyiWDmI0zhH849hiagbw)
 - Request `admin` permission from the Slack Team owner, or other admin.
 
-- create a new Slack App on [api.slack.com](api.slack.com).  When the app is created, copy the secrets into your .env file:
-    - SLACK_CLIENT_ID=<your slack client_id>
-    - SLACK_CLIENT_SECRET=<your slack client_secret>
-    - SLACK_SIGNING_SECRET=<your slack signing_secret>
-- See the [tutorial](https://github.com/slackapi/python-slackclient/blob/master/tutorial/01-creating-the-slack-app.md#create-a-slack-app
-- https://1d1bd80f4733.ngrok.io/slack/events
-)
+- create a new Slack App on [api.slack.com](api.slack.com).  When the app is created, copy the secrets into your `.env` file:
+    ```
+    SLACK_CLIENT_ID=<your slack client_id>
+    SLACK_CLIENT_SECRET=<your slack client_secret>
+    SLACK_SIGNING_SECRET=<your slack signing_secret>
+    ```
+- See the [python-slackclient tutorial](https://github.com/slackapi/python-slackclient/blob/master/tutorial/01-creating-the-slack-app.md#create-a-slack-app)
+
 - To manage all your user-created slack apps, visit https://api.slack.com/apps
 - No OAuth scopes for USER Token are needed.
 - Add the following OAuth scopes to your BOT Token:
@@ -62,8 +65,8 @@ You do not need to add a 'Redirect URL'.  After desired scopes are selected, the
 DO NOT put this token in your source code, or push it to github in any way.  That is called a `Token Leak` and you will get a warning from github.  They scan user repos for leaked tokens.
 
 ## Setup Part 4: Ngrok Tunnel
-- create ngrok account
-- Download the zip file using `wget` and unzip it
+- Create [ngrok](https://ngrok.com/) account
+- From terminal window, download the zip file using `wget` and unzip it
 - Move ngrok binary to `/usr/local/bin`
 - Initialize with user key from ngrok dashboard
 
