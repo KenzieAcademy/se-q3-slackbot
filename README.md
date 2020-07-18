@@ -34,10 +34,12 @@ $ FLASK_APP=hello flask run
 
 
 ## Setup Part 3: Create Slack Account + App
-- Create a new member account on KenzieBot or KenzieBot2.
+- Create a new member account on one of these Slack workspaces.  Request `admin` privilege from the owner or another admin once you become a member.
+    - [KenzieBot](https://join.slack.com/t/kenziebot/shared_invite/zt-6d43wfx3-tJ37Y2ff3ipl5~dZ_tq5AA)
+    - [KenzieBot2](https://join.slack.com/t/kenziebot2/shared_invite/zt-6ccr4b5t-19RyiWDmI0zhH849hiagbw)
 - Request `admin` permission from the Slack Team owner, or other admin.
 
-- create a new Slack App on [api.slack.com](api.slack.com). You will need admin permission.  When the app is created, copy the secrets into your .env file:
+- create a new Slack App on [api.slack.com](api.slack.com).  When the app is created, copy the secrets into your .env file:
     - SLACK_CLIENT_ID=<your slack client_id>
     - SLACK_CLIENT_SECRET=<your slack client_secret>
     - SLACK_SIGNING_SECRET=<your slack signing_secret>
