@@ -24,7 +24,7 @@ The Slack APIs (Events and WebClient) are designed around the concept of [webhoo
 
 Using the [quickstart](https://flask.palletsprojects.com/en/1.1.x/quickstart/) code as your guide, create a local file named `hello.py` and copy the code into it.  Run the Flask server as directed in the quickstart, and verify that you can reach the app root from your Chrome browser.  This file is used for experimenting with Flask only; it won't be part of your Slackbot app.
 
-Make sure you finish the Flask quickstart lesson so that you become familiar with this important component of your Slackbot.  Flask contains it's own built-in web application server called [Werkzeug](https://werkzeug.palletsprojects.com/en/1.0.x/) to streamline development.  Werkzeug has its own internal debugger which is enabled by setting the `FLASK_ENV` variable from 'production' to 'development'. You should see a message like this when Flask is up and running:
+Make sure you finish the Flask quickstart lesson so that you become familiar with this important component of your Slackbot.  To streamline development, Flask contains it's own built-in web application server which is a component of the [Werkzeug](https://werkzeug.palletsprojects.com/en/1.0.x/) WSGI utilities library.  Werkzeug has its own internal debugger which is enabled by setting the `FLASK_ENV` variable from 'production' to 'development'. You should see a message like this when Flask is up and running:
 ```console
 $ FLASK_APP=hello flask run
  * Serving Flask app "hello"
