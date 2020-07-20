@@ -60,15 +60,48 @@ $ FLASK_APP=hello flask run
     - `reactions:read` (get events when someone reacts)
 
 You do not need to add a 'Redirect URL'.  After desired scopes are selected, then click **Install App to Workspace**!  You will receive a `Bot User OAuth Access Token` which you should copy and store as a key/value pair in local `.env` file like this:
->`BOT_TOKEN=<your bot_token>`
+>`SLACK_BOT_TOKEN=<your bot_token>`
 
 DO NOT put this token in your source code, or push it to github in any way.  That is called a `Token Leak` and you will get a warning from github.  They scan user repos for leaked tokens.
 
 ## Setup Part 4: Ngrok Tunnel
-- Create [ngrok](https://ngrok.com/) account
-- From terminal window, download the zip file using `wget` and unzip it
-- Move ngrok binary to `/usr/local/bin`
-- Initialize with user key from ngrok dashboard
+The ngrok tunnel is a utility that makes web app development on your local machine easier.  You can have others try out your server from a public IP address, without needing to run your app on a hosting service.
+- Make sure you have the [`wget`](https://www.gnu.org/software/wget/) command line utility installed. This utility is widely used by backend Software Engineers to download files from the web.  For MacOS: `brew install wget`
+- Create your own free [ngrok](https://ngrok.com/) account
+- From terminal window in your home directory, download the zip file using `wget` and unzip it.  Right-click on the download button and _Copy Link Address_ which is specific to your OS.  Then paste after wget.
+    ```console
+    wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip
+    unzip ngrok-stable-darwin-amd64.zip
+    ```
+- Move the ngrok binary to `/usr/local/bin` which is where many other binary utilities are kept.
+    ```console
+    mv ngrok /usr/local/bin
+    ```
+- Initialize ngrok with user key from your ngrok dashboard. This will associate your local ngrok to your account. Your authtoken will be different; you only have to do this once.
+    ```console
+    ngrok authtoken 1URMgVltd5Qxlbn7FJGsgtLK_7VKuVnwcsUucqK5erXqNH
+    ```
+
+Now its time to try out your new tunnel!  You will need two terminal windows open.
+- In the first terminal window, run your Flask web server again.  Note the port number that the app is being served on (e.g. 3000 or 5000)
+- In the second window, start ngrok and tunnel http requests to your Flask server
+    ```console
+    $ ngrok http 5000
+
+    ngrok by @inconshreveable
+
+    Session Status                online
+    Account                       <your name here> (Plan: Free)
+    Version                       2.3.35
+    Region                        United States (us)
+    Web Interface                 http://127.0.0.1:4040
+    Forwarding                    http://3e977b3ff227.ngrok.io -> http://localhost:5000
+    Forwarding                    https://3e977b3ff227.ngrok.io -> http://localhost:5000
+
+    Connections                   ttl     opn     rt1     rt5     p50     p90
+                                  0       0       0.00    0.00    0.00    0.00
+    ```
+    Your Flask web server is now publicly visible.  Anyone who loads one of the `ngrok.io` addresses above in their browser, gets tunneled straight to your local Flask dev environment.  Also, check out the local **ngrok Web Interface** page above http://127.0.0.1:4040 -- gives cool metrics of your tunnel traffic and what the requests look like.  You can shut the tunnel down with CTRL-C.
 
 ## Setup Part 5: Enable Events
 - Enable [Event Subscriptions](https://api.slack.com/events-api#subscriptions) for you Bot.  This will require URL verification (which is why you installed ngrok)
